@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="phone">
+
+    <header class="top-bar">
+        <button class="icon-button back" onclick="goBack()">‹</button>
+        <strong>Job Details</strong>
+        <button class="icon-button" onclick="toggleJobMenu()">⋮</button>
+    </header>
+
+    <div id="jobMenu" class="job-menu hidden">
+        <button onclick="goToDetails()">📄 Update Status</button>
+        <button onclick="goToPhotos()">📷 View Photos</button>
+        <button onclick="openCompleteScreen()">✓ Complete Job</button>
+    </div>
+
+    <div class="issue-heading">
+        <strong id="issueNumber">ISS-1047</strong>
+        <span id="priority" class="priority high">HIGH</span>
+    </div>
+
+    <div class="details-tabs">
+        <button id="detailsTab" class="details-tab active"
+            onclick="showTab('details', this)">Details</button>
+
+        <button id="updatesTab" class="details-tab"
+            onclick="showTab('updates', this)">Updates</button>
+
+        <button id="photosTab" class="details-tab"
+            onclick="showTab('photos', this)">Photos</button>
+    </div>
+
+    <main class="details-content">
+
+        <div id="detailsContent" class="tab-content">
+
+            <h2 id="jobTitle">Water Leak</h2>
+
+            <div class="detail-section">
+                <h3>Location</h3>
+
+                <p id="jobLocation">42 Main Road</p>
+
+                <button class="map-button" onclick="openMaps()">
+                    📍 Open in Maps
+                </button>
+            </div>
+
+            <div class="detail-section">
+                <h3>Description</h3>
+
+                <p id="jobDescription">
+                    Water is leaking from a damaged pipe outside the property and needs to be repaired.
+                </p>
+            </div>
+
+            <div class="detail-section">
+                <h3>Update Status</h3>
+
+                <select id="status">
+                    <option value="Assigned">Assigned</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
+            <div class="detail-section">
+                <h3>Add Progress Note</h3>
+
+                <textarea
+                    id="progressNote"
+                    maxlength="250"
+                    placeholder="Enter progress update..."
+                ></textarea>
+
+                <div id="progressCount" class="character-count">
+                    0/250
+                </div>
+            </div>
+
+            <button class="save-button" onclick="saveUpdate()">
+                Save Update
+            </button>
+
+            <button class="secondary-button" onclick="openCompleteScreen()">
+                Complete Job
+            </button>
+
+        </div>
+
+        <div id="updatesContent" class="tab-content hidden">
+
+            <h2>Updates</h2>
+
+            <div id="savedUpdates"></div>
+
+        </div>
+
+        <div id="photosContent" class="tab-content hidden">
+
+            <h2>Photos</h2>
+
+            <div class="photo-section">
+
+                <h3>BEFORE (Reported)</h3>
+
+                <div id="beforePhotoPreview" class="photo-placeholder">
+                    <span class="photo-icon">🖼️</span>
+
+                    <strong>water_leak.jpg</strong>
+
+                    <small>Reported photo</small>
+                </div>
+
+                <label class="photo-button">
+                    📷 Change Photo
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onchange="previewPhoto(this, 'beforePhotoPreview')"
+                    >
+                </label>
+
+            </div>
+
+            <div class="photo-section">
+
+                <h3>AFTER (Completion Photo)</h3>
+
+                <div id="afterPhotoPreview" class="photo-placeholder">
+                    <span class="photo-icon">🖼️</span>
+
+                    <strong>No completion photo</strong>
+
+                    <small>Add a photo after completing the work</small>
+                </div>
+
+                <label class="photo-button">
+                    📷 Change Photo
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onchange="previewPhoto(this, 'afterPhotoPreview')"
+                    >
+                </label>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav">
+
+        <button class="nav-item active-nav" onclick="goBack()">
+            <span>⌂</span>
+            <small>Jobs</small>
+        </button>
+
+        <button class="nav-item" onclick="goToUpdatesPage()">
+            <span>▣</span>
+            <small>Updates</small>
+        </button>
+
+        <button class="nav-item" onclick="goToProfile()">
+            <span>♙</span>
+            <small>Profile</small>
+        </button>
+
+    </nav>
+
+</div>
+
+
+<div id="completeScreen" class="complete-screen hidden">
+
+    <div class="phone">
+
+        <header class="top-bar">
+
+            <button class="icon-button back" onclick="closeCompleteScreen()">
+                ‹
+            </button>
+
+            <strong>Job Details</strong>
+
+            <button class="icon-button" onclick="toggleCompleteMenu()">
+                ⋮
+            </button>
+
+        </header>
+
+        <div id="completeMenu" class="job-menu hidden">
+
+            <button onclick="goToCompleteDetails()">
+                📄 Update Status
+            </button>
+
+            <button onclick="showCompletePhotos()">
+                📷 Photos
+            </button>
+
+        </div>
+
+        <div class="issue-heading">
+
+            <strong id="completeIssueNumber">
+                ISS-1047
+            </strong>
+
+            <span id="completePriority" class="priority high">
+                HIGH
+            </span>
+
+        </div>
+
+        <div class="details-tabs">
+
+            <button
+                class="details-tab active"
+                onclick="completeTab('details', this)"
+            >
+                Details
+            </button>
+
+            <button
+                class="details-tab"
+                onclick="completeTab('updates', this)"
+            >
+                Updates
+            </button>
+
+            <button
+                class="details-tab"
+                onclick="completeTab('photos', this)"
+            >
+                Photos
+            </button>
+
+        </div>
+
+        <main class="details-content">
+
+            <div id="completeDetails" class="tab-content">
+
+                <h2>Complete Job</h2>
+
+                <div class="completion-photo-section">
+
+                    <h3>BEFORE (Reported)</h3>
+
+                    <div
+                        id="completionBeforePhoto"
+                        class="completion-photo"
+                    >
+
+                        <span>🖼️</span>
+
+                        <strong>water_leak.jpg</strong>
+
+                        <small>Reported photo</small>
+
+                    </div>
+
+                </div>
+
+                <div class="completion-photo-section">
+
+                    <h3>AFTER (Completion Photo)</h3>
+
+                    <div
+                        id="completionAfterPhoto"
+                        class="completion-photo"
+                    >
+
+                        <span>🖼️</span>
+
+                        <strong>No completion photo</strong>
+
+                        <small>Add a photo of the completed work</small>
+
+                    </div>
+
+                    <label class="photo-button">
+
+                        📷 Change Photo
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            hidden
+                            onchange="previewCompletionPhoto(this)"
+                        >
+
+                    </label>
+
+                </div>
+
+                <div class="detail-section">
+
+                    <h3>Update Status *</h3>
+
+                    <select id="completionStatus">
+                        <option value="Resolved">Resolved</option>
+                    </select>
+
+                </div>
+
+                <div class="detail-section">
+
+                    <h3>Add Completion Note</h3>
+
+                    <textarea
+                        id="completionNote"
+                        maxlength="250"
+                        placeholder="Enter completion note..."
+                    ></textarea>
+
+                    <div id="completionCount" class="character-count">
+                        0/250
+                    </div>
+
+                </div>
+
+                <button class="save-button" onclick="markAsResolved()">
+                    Mark as Resolved
+                </button>
+
+            </div>
+
+
+            <div id="completeUpdates" class="tab-content hidden">
+
+                <h2>Updates</h2>
+
+                <div id="completeSavedUpdates"></div>
+
+            </div>
+
+
+            <div id="completePhotos" class="tab-content hidden">
+
+                <h2>Photos</h2>
+
+                <div
+                    id="completePhotoGallery"
+                    class="photo-gallery"
+                ></div>
+
+            </div>
+
+        </main>
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-item active-nav"
+                onclick="closeCompleteScreen()"
+            >
+                <span>⌂</span>
+                <small>Jobs</small>
+            </button>
+
+            <button
+                class="nav-item"
+                onclick="goToUpdatesPage()"
+            >
+                <span>▣</span>
+                <small>Updates</small>
+            </button>
+
+            <button
+                class="nav-item"
+                onclick="goToProfile()"
+            >
+                <span>♙</span>
+                <small>Profile</small>
+            </button>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const jobs = {
+
+    "ISS-1047": {
+        title: "Water Leak",
+        location: "42 Main Road",
+        priority: "HIGH",
+        description:
+            "Water is leaking from a damaged pipe outside the property and needs to be repaired."
+    },
+
+    "ISS-1042": {
+        title: "Broken Streetlight",
+        location: "Hill Street",
+        priority: "MEDIUM",
+        description:
+            "The streetlight is not working and the area becomes dark at night."
+    },
+
+    "ISS-1041": {
+        title: "Pothole",
+        location: "3rd Street",
+        priority: "LOW",
+        description:
+            "A large pothole has formed on the road and needs to be repaired."
+    }
+
+};
+
+
+const parameters =
+    new URLSearchParams(window.location.search);
+
+const issueNumber =
+    parameters.get("issue") || "ISS-1047";
+
+const currentJob =
+    jobs[issueNumber];
+
+
+function loadJob() {
+
+    if (!currentJob) {
+        return;
+    }
+
+    document.getElementById("issueNumber").textContent =
+        issueNumber;
+
+    document.getElementById("completeIssueNumber").textContent =
+        issueNumber;
+
+    document.getElementById("jobTitle").textContent =
+        currentJob.title;
+
+    document.getElementById("jobLocation").textContent =
+        currentJob.location;
+
+    document.getElementById("jobDescription").textContent =
+        currentJob.description;
+
+    setPriority(
+        document.getElementById("priority"),
+        currentJob.priority
+    );
+
+    setPriority(
+        document.getElementById("completePriority"),
+        currentJob.priority
+    );
+
+    loadSavedStatus();
+    loadUpdates();
+
+}
+
+
+function setPriority(element, priority) {
+
+    element.textContent = priority;
+
+    element.classList.remove(
+        "high",
+        "medium",
+        "low"
+    );
+
+    element.classList.add(
+        priority.toLowerCase()
+    );
+
+}
+
+
+function loadSavedStatus() {
+
+    const statuses =
+        JSON.parse(
+            localStorage.getItem("jobStatuses") || "{}"
+        );
+
+    const savedStatus =
+        statuses[issueNumber];
+
+    if (savedStatus) {
+
+        document.getElementById("status").value =
+            savedStatus;
+
+    }
+
+}
+
+
+function goBack() {
+
+    window.location.href = "index.html";
+
+}
+
+
+function goToProfile() {
+
+    window.location.href = "profile.html";
+
+}
+
+
+function goToUpdatesPage() {
+
+    window.location.href = "updates.html";
+
+}
+
+
+function toggleJobMenu() {
+
+    document
+        .getElementById("jobMenu")
+        .classList.toggle("hidden");
+
+}
+
+
+function toggleCompleteMenu() {
+
+    document
+        .getElementById("completeMenu")
+        .classList.toggle("hidden");
+
+}
+
+
+// close menus when clicking outside
+document.addEventListener("click", function(event) {
+
+    const jobMenu =
+        document.getElementById("jobMenu");
+
+    const completeMenu =
+        document.getElementById("completeMenu");
+
+    const clickedButton =
+        event.target.closest(".icon-button");
+
+    if (
+        jobMenu &&
+        !jobMenu.classList.contains("hidden") &&
+        !jobMenu.contains(event.target) &&
+        !clickedButton
+    ) {
+
+        jobMenu.classList.add("hidden");
+
+    }
+
+    if (
+        completeMenu &&
+        !completeMenu.classList.contains("hidden") &&
+        !completeMenu.contains(event.target) &&
+        !clickedButton
+    ) {
+
+        completeMenu.classList.add("hidden");
+
+    }
+
+});
+
+
+function goToDetails() {
+
+    document
+        .getElementById("jobMenu")
+        .classList.add("hidden");
+
+    showTab(
+        "details",
+        document.getElementById("detailsTab")
+    );
+
+}
+
+
+function goToPhotos() {
+
+    document
+        .getElementById("jobMenu")
+        .classList.add("hidden");
+
+    showTab(
+        "photos",
+        document.getElementById("photosTab")
+    );
+
+}
+
+
+function showTab(tab, clickedButton) {
+
+    document
+        .querySelectorAll(".details-content > .tab-content")
+        .forEach(function(content) {
+
+            content.classList.add("hidden");
+
+        });
+
+    document
+        .querySelectorAll("body > .phone .details-tab")
+        .forEach(function(button) {
+
+            button.classList.remove("active");
+
+        });
+
+    clickedButton.classList.add("active");
+
+    document
+        .getElementById(tab + "Content")
+        .classList.remove("hidden");
+
+    if (tab === "updates") {
+
+        loadUpdates();
+
+    }
+
+}
+
+
+function saveUpdate() {
+
+    const status =
+        document.getElementById("status").value;
+
+    const note =
+        document.getElementById("progressNote")
+            .value
+            .trim();
+
+    if (note === "") {
+
+        document.getElementById("progressNote").focus();
+
+        return;
+
+    }
+
+    const statuses =
+        JSON.parse(
+            localStorage.getItem("jobStatuses") || "{}"
+        );
+
+    statuses[issueNumber] = status;
+
+    localStorage.setItem(
+        "jobStatuses",
+        JSON.stringify(statuses)
+    );
+
+
+    const allUpdates =
+        JSON.parse(
+            localStorage.getItem("jobUpdates") || "{}"
+        );
+
+    if (!allUpdates[issueNumber]) {
+
+        allUpdates[issueNumber] = [];
+
+    }
+
+    const date =
+        new Date().toLocaleDateString(
+            "en-ZA",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    allUpdates[issueNumber].push({
+        status: status,
+        note: note,
+        date: date
+    });
+
+    localStorage.setItem(
+        "jobUpdates",
+        JSON.stringify(allUpdates)
+    );
+
+    document.getElementById("progressNote").value = "";
+
+    document.getElementById("progressCount").textContent =
+        "0/250";
+
+    loadUpdates();
+
+    showTab(
+        "updates",
+        document.getElementById("updatesTab")
+    );
+
+}
+
+
+function loadUpdates() {
+
+    const container =
+        document.getElementById("savedUpdates");
+
+    const completeContainer =
+        document.getElementById("completeSavedUpdates");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    if (completeContainer) {
+        completeContainer.innerHTML = "";
+    }
+
+    const allUpdates =
+        JSON.parse(
+            localStorage.getItem("jobUpdates") || "{}"
+        );
+
+    const updates =
+        allUpdates[issueNumber] || [];
+
+    if (updates.length === 0) {
+
+        const emptyHTML = `
+            <div class="empty-jobs">
+                <div class="empty-icon">▣</div>
+                <strong>No updates yet</strong>
+                <p>Saved progress updates will appear here.</p>
+            </div>
+        `;
+
+        container.innerHTML = emptyHTML;
+
+        if (completeContainer) {
+            completeContainer.innerHTML = emptyHTML;
+        }
+
+        return;
+
+    }
+
+    updates
+        .slice()
+        .reverse()
+        .forEach(function(update) {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "update-item";
+
+            item.innerHTML = `
+                <strong>
+                    🔧 ${escapeHTML(update.status)}
+                </strong>
+
+                <small>
+                    ${escapeHTML(update.date)}
+                </small>
+
+                <p>
+                    ${escapeHTML(update.note)}
+                </p>
+            `;
+
+            container.appendChild(item);
+
+            if (completeContainer) {
+
+                completeContainer.appendChild(
+                    item.cloneNode(true)
+                );
+
+            }
+
+        });
+
+}
+
+
+function openCompleteScreen() {
+
+    document
+        .getElementById("jobMenu")
+        .classList.add("hidden");
+
+    document
+        .getElementById("completeScreen")
+        .classList.remove("hidden");
+
+    loadUpdates();
+
+}
+
+
+function closeCompleteScreen() {
+
+    document
+        .getElementById("completeScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("completeMenu")
+        .classList.add("hidden");
+
+}
+
+
+function goToCompleteDetails() {
+
+    document
+        .getElementById("completeMenu")
+        .classList.add("hidden");
+
+    const button =
+        document.querySelector(
+            "#completeScreen .details-tab"
+        );
+
+    completeTab("details", button);
+
+}
+
+
+function completeTab(tab, clickedButton) {
+
+    document
+        .querySelectorAll(
+            "#completeScreen .tab-content"
+        )
+        .forEach(function(content) {
+
+            content.classList.add("hidden");
+
+        });
+
+    document
+        .querySelectorAll(
+            "#completeScreen .details-tab"
+        )
+        .forEach(function(button) {
+
+            button.classList.remove("active");
+
+        });
+
+    clickedButton.classList.add("active");
+
+
+    if (tab === "details") {
+
+        document
+            .getElementById("completeDetails")
+            .classList.remove("hidden");
+
+    }
+
+
+    if (tab === "updates") {
+
+        document
+            .getElementById("completeUpdates")
+            .classList.remove("hidden");
+
+        loadUpdates();
+
+    }
+
+
+    if (tab === "photos") {
+
+        document
+            .getElementById("completePhotos")
+            .classList.remove("hidden");
+
+        renderCompletePhotos();
+
+    }
+
+}
+
+
+// render the completion photo gallery
+function renderCompletePhotos() {
+
+    const gallery =
+        document.getElementById(
+            "completePhotoGallery"
+        );
+
+    gallery.innerHTML = `
+
+        <div class="photo-gallery-card">
+
+            <div class="photo-placeholder">
+                🖼️
+            </div>
+
+            <strong>
+                Before photo
+            </strong>
+
+            <small>
+                Reported photo
+            </small>
+
+        </div>
+
+
+        <div class="photo-gallery-card">
+
+            <div
+                id="galleryAfterPhoto"
+                class="photo-placeholder"
+            >
+                🖼️
+            </div>
+
+            <strong>
+                After photo
+            </strong>
+
+            <small>
+                Completion photo
+            </small>
+
+        </div>
+
+    `;
+
+}
+
+
+// open the photos tab from the menu
+function showCompletePhotos() {
+
+    document
+        .getElementById("completeMenu")
+        .classList.add("hidden");
+
+    const photosTab =
+        document.querySelector(
+            "#completeScreen .details-tabs .details-tab:nth-child(3)"
+        );
+
+    if (photosTab) {
+
+        completeTab(
+            "photos",
+            photosTab
+        );
+
+    }
+
+}
+
+
+function previewCompletionPhoto(input) {
+
+    const file =
+        input.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        function(event) {
+
+            const container =
+                document.getElementById(
+                    "completionAfterPhoto"
+                );
+
+            container.innerHTML = `
+
+                <img
+                    src="${event.target.result}"
+                    class="completion-uploaded-photo"
+                    alt="Completion photo"
+                >
+
+            `;
+
+        };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function previewPhoto(input, previewId) {
+
+    const file =
+        input.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        function(event) {
+
+            const preview =
+                document.getElementById(
+                    previewId
+                );
+
+            preview.innerHTML = `
+
+                <img
+                    src="${event.target.result}"
+                    class="uploaded-photo"
+                    alt="Uploaded photo"
+                >
+
+            `;
+
+        };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function markAsResolved() {
+
+    const note =
+        document.getElementById(
+            "completionNote"
+        ).value.trim();
+
+    if (note === "") {
+
+        document
+            .getElementById("completionNote")
+            .focus();
+
+        return;
+
+    }
+
+    const statuses =
+        JSON.parse(
+            localStorage.getItem("jobStatuses") || "{}"
+        );
+
+    statuses[issueNumber] =
+        "Completed";
+
+    localStorage.setItem(
+        "jobStatuses",
+        JSON.stringify(statuses)
+    );
+
+
+    const allUpdates =
+        JSON.parse(
+            localStorage.getItem("jobUpdates") || "{}"
+        );
+
+    if (!allUpdates[issueNumber]) {
+
+        allUpdates[issueNumber] = [];
+
+    }
+
+    const date =
+        new Date().toLocaleDateString(
+            "en-ZA",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    allUpdates[issueNumber].push({
+
+        status: "Resolved",
+
+        note: note,
+
+        date: date
+
+    });
+
+    localStorage.setItem(
+        "jobUpdates",
+        JSON.stringify(allUpdates)
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+function openMaps() {
+
+    const location =
+        document.getElementById(
+            "jobLocation"
+        ).textContent;
+
+    const mapsURL =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(location);
+
+    window.open(
+        mapsURL,
+        "_blank"
+    );
+
+}
+
+
+document
+    .getElementById("progressNote")
+    .addEventListener(
+        "input",
+        function() {
+
+            document
+                .getElementById("progressCount")
+                .textContent =
+                this.value.length + "/250";
+
+        }
+    );
+
+
+document
+    .getElementById("completionNote")
+    .addEventListener(
+        "input",
+        function() {
+
+            document
+                .getElementById("completionCount")
+                .textContent =
+                this.value.length + "/250";
+
+        }
+    );
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+loadJob();
+
+</script>
+
+</body>
+</html>

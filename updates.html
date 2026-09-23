@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Repair Team - Updates</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="phone">
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+
+        <button
+            class="icon-button back"
+            onclick="goToJobs()"
+        >
+            ‹
+        </button>
+
+        <strong>Updates</strong>
+
+        <button
+            class="icon-button"
+            onclick="openProfile()"
+        >
+            ♙
+        </button>
+
+    </header>
+
+
+    <!-- CONTENT -->
+    <main class="details-content">
+
+        <h2>
+            Recent Updates
+        </h2>
+
+        <div id="updatesContainer"></div>
+
+    </main>
+
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-item"
+            onclick="goToJobs()"
+        >
+
+            <span>
+                ⌂
+            </span>
+
+            <small>
+                Jobs
+            </small>
+
+        </button>
+
+
+        <button
+            class="nav-item active-nav"
+            onclick="goToUpdates()"
+        >
+
+            <span>
+                ▣
+            </span>
+
+            <small>
+                Updates
+            </small>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="goToProfile()"
+        >
+
+            <span>
+                ♙
+            </span>
+
+            <small>
+                Profile
+            </small>
+
+        </button>
+
+    </nav>
+
+</div>
+
+
+<script>
+
+/* Load all updates */
+
+function loadAllUpdates() {
+
+    const container =
+        document.getElementById(
+            "updatesContainer"
+        );
+
+
+    const allUpdates =
+        JSON.parse(
+            localStorage.getItem(
+                "jobUpdates"
+            ) || "{}"
+        );
+
+
+    const updateList = [];
+
+
+    Object.keys(allUpdates).forEach(
+        function(issueNumber) {
+
+            allUpdates[issueNumber].forEach(
+                function(update) {
+
+                    updateList.push({
+
+                        issue: issueNumber,
+
+                        status: update.status,
+
+                        note: update.note,
+
+                        date: update.date
+
+                    });
+
+                }
+            );
+
+        }
+    );
+
+
+    /* NEWEST FIRST */
+
+    updateList.reverse();
+
+
+    if (updateList.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-jobs">
+
+                <div class="empty-icon">
+                    ▣
+                </div>
+
+                <strong>
+                    No updates yet
+                </strong>
+
+                <p>
+                    Job progress updates will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    updateList.forEach(
+        function(update) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "update-item";
+
+
+            item.style.cursor =
+                "pointer";
+
+
+            item.innerHTML = `
+
+                <strong>
+                    🔧 ${escapeHTML(update.issue)}
+                </strong>
+
+                <small>
+                    ${escapeHTML(update.date)}
+                </small>
+
+                <p>
+                    <strong>
+                        ${escapeHTML(update.status)}
+                    </strong>
+                </p>
+
+                <p>
+                    ${escapeHTML(update.note)}
+                </p>
+
+            `;
+
+
+            item.onclick =
+                function() {
+
+                    window.location.href =
+                        "job-details.html?issue=" +
+                        encodeURIComponent(
+                            update.issue
+                        );
+
+                };
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goToJobs() {
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+function goToUpdates() {
+
+    window.location.href =
+        "updates.html";
+
+}
+
+
+function goToProfile() {
+
+    window.location.href =
+        "profile.html";
+
+}
+
+
+function openProfile() {
+
+    goToProfile();
+
+}
+
+
+
+/* Escape HTML */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+
+/* Start */
+
+loadAllUpdates();
+
+</script>
+
+</body>
+
+</html>
